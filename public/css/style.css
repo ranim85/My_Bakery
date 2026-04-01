@@ -1,0 +1,92 @@
+:root {
+    --primary-color: #8B4513; /* Saddle Brown */
+    --secondary-color: #D2B48C; /* Tan */
+    --accent-color: #DAA520; /* GoldenRod */
+    --bg-light: #FFF8DC; /* Cornsilk / Cream */
+    --bg-dark: #3E2723; /* Dark Brown */
+    --text-main: #3E2723;
+    --text-muted: #5D4037;
+    --white: #ffffff;
+    --success: #689F38;
+    --danger: #D32F2F;
+}
+
+body {
+    background-color: var(--bg-light);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+h1, h2, h3, h4, h5, h6, .brand-font {
+    font-family: 'Outfit', sans-serif;
+}
+
+.title-brown {
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+.auth-card {
+    border-radius: 12px;
+    border-top: 5px solid var(--accent-color);
+}
+
+.btn-bakery {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--white);
+    transition: all 0.3s ease;
+}
+
+.btn-bakery:hover {
+    background-color: var(--bg-dark);
+    border-color: var(--bg-dark);
+    color: var(--white);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.navbar-bakery {
+    background-color: var(--bg-dark);
+}
+
+.navbar-bakery .navbar-brand {
+    color: var(--accent-color);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+.navbar-bakery .navbar-brand:hover {
+    color: var(--white);
+}
+
+.navbar-bakery .nav-link {
+    color: var(--white) !important;
+    opacity: 0.8;
+}
+
+.navbar-bakery .nav-link:hover {
+    opacity: 1;
+    color: var(--accent-color) !important;
+}
+
+.stat-card {
+    border-top: 4px solid var(--secondary-color);
+    border-radius: 8px;
+    transition: transform 0.2s ease;
+}
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+footer {
+    margin-top: auto;
+    background-color: var(--bg-dark);
+    color: var(--secondary-color);
+    text-align: center;
+    padding: 1rem 0;
+}

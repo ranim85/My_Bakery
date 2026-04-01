@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add Expense - My Bakery{% endblock %}
+
+{% block body %}
+<div class="container mt-4 max-w-lg">
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <h2 class="title-brown border-bottom pb-2 mb-4">Record New Expense</h2>
+            
+            <form method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label class="form-label text-muted">Date</label>
+                    <input type="date" name="date" class="form-control" value="{{ 'now'|date('Y-m-d') }}" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label text-muted">Description (e.g., Flour, Sugar)</label>
+                    <input type="text" name="description" class="form-control" required placeholder="Raw materials purchased...">
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label text-muted">Amount (TND)</label>
+                    <input type="number" step="0.01" name="amount" class="form-control" required>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="form-label text-muted">Receipt Photo (Optional)</label>
+                    <input type="file" name="image" class="form-control" accept="image/*">
+                    <div class="form-text">Take a picture of the handwritten note/receipt.</div>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <a href="{{ path('admin_purchase_index') }}" class="btn btn-outline-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary btn-bakery">Save Expense</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

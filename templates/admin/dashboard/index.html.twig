@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard - Admin My Bakery{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+        <h1 class="title-brown">Manager Dashboard</h1>
+        <div>
+            <a href="{{ path('admin_product_index') }}" class="btn btn-outline-secondary">Products</a>
+            <a href="{{ path('admin_purchase_index') }}" class="btn btn-outline-secondary">Expenses</a>
+        </div>
+    </div>
+
+    <div class="row text-center mb-5">
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 stat-card">
+                <div class="card-body">
+                    <h5 class="card-title text-muted">Expected Income</h5>
+                    <h2 class="text-primary">{{ totalCalculated | number_format(2) }} TND</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 stat-card">
+                <div class="card-body">
+                    <h5 class="card-title text-muted">Declared Income</h5>
+                    <h2 class="text-success">{{ totalAnnounced | number_format(2) }} TND</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 stat-card">
+                <div class="card-body">
+                    <h5 class="card-title text-muted">Total Expenses</h5>
+                    <h2 class="text-danger">- {{ totalExpenses | number_format(2) }} TND</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 stat-card">
+                <div class="card-body">
+                    <h5 class="card-title text-muted">Discrepancy (Missing)</h5>
+                    <h2 class="{% if totalDiscrepancy > 0 %}text-danger{% else %}text-muted{% endif %}">
+                        {{ totalDiscrepancy | number_format(2) }} TND
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if discrepancies|length > 0 %}
+    <div class="alert alert-danger shadow border-0 mt-4 rounded-4">
+        <h4 class="alert-heading text-danger fw-bold"><i class="fas fa-exclamation-triangle me-2"></i> Financial Discrepancies Detected!</h4>
+        <p class="mb-3 text-dark">There are differences between the system's calculated expectations and the money declared by your workers. Please investigate the entries below:</p>
+        <div class="table-responsive bg-white rounded-3 p-3 shadow-sm border border-danger border-opacity-25">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light text-secondary small">
+                    <tr>
+                        <th>Date</th>
+                        <th>Worker Identity</th>
+                        <th>Product</th>
+                        <th class="text-end">Expected (System)</th>
+                        <th class="text-end">Declared (Worker)</th>
+                        <th class="text-end">Missing Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for issue in discrepancies %}
+                    <tr>
+                        <td class="text-muted"><i class="fas fa-calendar-alt me-1"></i>{{ issue.log.date|date('Y-m-d') }}</td>
+                        <td class="fw-bold"><i class="fas fa-user-circle text-primary me-1"></i>{{ issue.log.worker ? issue.log.worker.userIdentifier : 'Unknown Employee' }}</td>
+                        <td><span class="badge bg-secondary bg-opacity-10 text-dark">{{ issue.log.product.name }}</span></td>
+                        <td class="text-end fw-medium">{{ issue.log.calculatedTotal|number_format(2) }} <small class="text-muted">TND</small></td>
+                        <td class="text-end fw-bold">{{ issue.log.announcedTotal|number_format(2) }} <small class="text-muted">TND</small></td>
+                        <td class="text-end">
+                            {% if issue.difference > 0 %}
+                                <span class="badge bg-danger bg-opacity-10 text-danger border border-danger px-3 py-2 fs-6 rounded-pill">
+                                    <i class="fas fa-arrow-down me-1"></i> Missing {{ issue.difference|number_format(2) }} TND
+                                </span>
+                            {% else %}
+                                <span class="badge bg-warning bg-opacity-10 text-warning border border-warning px-3 py-2 fs-6 rounded-pill">
+                                    <i class="fas fa-arrow-up me-1"></i> Surplus {{ (issue.difference * -1)|number_format(2) }} TND
+                                </span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Expenses Summary - My Bakery{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+        <h1 class="title-brown">Expenses Log</h1>
+        <a href="{{ path('admin_purchase_new') }}" class="btn btn-primary btn-bakery">Add Expense</a>
+    </div>
+
+    <table class="table bg-white shadow-sm rounded">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Amount</th>
+                <th>Note Image</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for purchase in purchases %}
+            <tr>
+                <td>{{ purchase.date|date('Y-m-d') }}</td>
+                <td>{{ purchase.description }}</td>
+                <td class="text-danger font-weight-bold">-{{ purchase.amount }} TND</td>
+                <td>
+                    {% if purchase.imagePath %}
+                        <a href="{{ asset('uploads/purchases/' ~ purchase.imagePath) }}" target="_blank">View Receipt</a>
+                    {% else %}
+                        No file
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4" class="text-center text-muted py-4">No expenses recorded yet.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
