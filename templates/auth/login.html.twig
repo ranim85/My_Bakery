@@ -3,37 +3,52 @@
 {% block title %}Log in! - My Bakery{% endblock %}
 
 {% block body %}
-<div class="login-container">
-    <form method="post" class="login-form">
-        {% if error %}
-            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
-
-        {% if app.user %}
-            <div class="mb-3">
-                You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
-            </div>
-        {% endif %}
-
-        <h1 class="h3 mb-3 font-weight-normal title-brown">Welcome to My Bakery</h1>
-        
-        <div class="form-group row">
-            <label for="username">Username</label>
-            <input type="text" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="username" required autofocus>
+<div class="container d-flex align-items-center justify-content-center" style="min-height: 80vh;">
+    <div class="card shadow border-0 rounded-4 w-100" style="max-width: 450px;">
+        <div class="card-header bg-white border-bottom-0 text-center pt-5 pb-2">
+            <i class="fas fa-bread-slice fa-3x mb-3" style="color: #DAA520;"></i>
+            <h1 class="h3 font-weight-normal title-brown fw-bold">My Bakery</h1>
+            <p class="text-muted small">Veuillez vous authentifier pour accéder à votre espace.</p>
         </div>
         
-        <div class="form-group row">
-            <label for="password">Password</label>
-            <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
+        <div class="card-body px-4 px-md-5 pb-5 pt-2">
+            <form method="post">
+                {% if error %}
+                    <div class="alert alert-danger rounded-3 shadow-sm text-center small mb-4">
+                        <i class="fas fa-exclamation-circle me-1"></i> {{ error.messageKey|trans(error.messageData, 'security') }}
+                    </div>
+                {% endif %}
+
+                {% if app.user %}
+                    <div class="alert alert-info rounded-3 text-center small mb-4">
+                        Vous êtes déjà connecté en tant que <strong>{{ app.user.userIdentifier }}</strong>. <br>
+                        <a href="{{ path('app_logout') }}" class="fw-bold mt-1 d-block text-info">Se déconnecter</a>
+                    </div>
+                {% endif %}
+
+                <div class="mb-4">
+                    <label for="username" class="form-label text-secondary fw-semibold">Identifiant</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-2 border-end-0 text-muted"><i class="fas fa-user"></i></span>
+                        <input type="text" value="{{ last_username }}" name="_username" id="username" class="form-control border-2 bg-light border-start-0 ps-0 py-2" autocomplete="username" required autofocus placeholder="admin@gmail.com">
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="password" class="form-label text-secondary fw-semibold">Mot de passe</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-2 border-end-0 text-muted"><i class="fas fa-lock"></i></span>
+                        <input type="password" name="_password" id="password" class="form-control border-2 bg-light border-start-0 ps-0 py-2" autocomplete="current-password" required placeholder="********">
+                    </div>
+                </div>
+
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                <button class="btn btn-primary btn-bakery w-100 py-3 mt-3 fw-bold shadow-sm rounded-3" type="submit">
+                    Connexion <i class="fas fa-sign-in-alt ms-2"></i>
+                </button>
+            </form>
         </div>
-
-        <input type="hidden" name="_csrf_token"
-               value="{{ csrf_token('authenticate') }}"
-        >
-
-        <button class="btn btn-lg btn-primary btn-bakery mt-4" type="submit">
-            Sign in
-        </button>
-    </form>
+    </div>
 </div>
 {% endblock %}

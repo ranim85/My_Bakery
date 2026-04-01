@@ -4,11 +4,34 @@
 
 {% block body %}
 <div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
-        <h1 class="title-brown">Manager Dashboard</h1>
-        <div>
-            <a href="{{ path('admin_product_index') }}" class="btn btn-outline-secondary">Products</a>
-            <a href="{{ path('admin_purchase_index') }}" class="btn btn-outline-secondary">Expenses</a>
+    <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom flex-wrap">
+        <h1 class="title-brown d-flex align-items-center mb-3 mb-md-0">
+            Manager Dashboard
+            {% if currentDateFilter == 'today' %}
+                <span class="badge bg-primary ms-3 fs-6 rounded-pill">Today</span>
+            {% elseif currentDateFilter == 'month' %}
+                <span class="badge bg-info ms-3 fs-6 rounded-pill">This Month</span>
+            {% elseif currentDateFilter == 'year' %}
+                <span class="badge bg-warning text-dark ms-3 fs-6 rounded-pill">This Year</span>
+            {% elseif currentDateFilter != 'all' %}
+                <span class="badge bg-secondary ms-3 fs-6 rounded-pill">{{ currentDateFilter|date('d/m/Y') }}</span>
+            {% else %}
+                <span class="badge bg-dark ms-3 fs-6 rounded-pill">All Time</span>
+            {% endif %}
+        </h1>
+        
+        <div class="d-flex align-items-center gap-2">
+            <form method="get" class="d-flex align-items-center bg-white p-1 rounded-3 shadow-sm border">
+                <input type="date" name="date" class="form-control border-0" style="width: 140px;" value="{% if currentDateFilter != 'all' and currentDateFilter != 'today' and currentDateFilter != 'month' and currentDateFilter != 'year' %}{{ currentDateFilter }}{% elseif currentDateFilter == 'today' %}{{ 'now'|date('Y-m-d') }}{% endif %}" onchange="this.form.submit()" title="Choose a specific day">
+                <div class="mx-1 text-muted fw-bold d-none d-lg-block">OR</div>
+                <button type="submit" name="date" value="today" class="btn btn-sm {% if currentDateFilter == 'today' %}btn-primary{% else %}btn-light{% endif %} fw-bold ms-1" title="Show Today">Today</button>
+                <button type="submit" name="date" value="month" class="btn btn-sm {% if currentDateFilter == 'month' %}btn-info text-white{% else %}btn-light{% endif %} fw-bold ms-1" title="Show Current Month">Month</button>
+                <button type="submit" name="date" value="year" class="btn btn-sm {% if currentDateFilter == 'year' %}btn-warning text-dark{% else %}btn-light{% endif %} fw-bold ms-1" title="Show Current Year">Year</button>
+                <button type="submit" name="date" value="all" class="btn btn-sm {% if currentDateFilter == 'all' %}btn-dark{% else %}btn-light{% endif %} fw-bold ms-1" title="Show Everything">All</button>
+            </form>
+            <div class="vr mx-1"></div>
+            <a href="{{ path('admin_product_index') }}" class="btn btn-outline-secondary"><i class="fas fa-bread-slice me-1"></i> Products</a>
+            <a href="{{ path('admin_purchase_index') }}" class="btn btn-outline-secondary"><i class="fas fa-receipt me-1"></i> Expenses</a>
         </div>
     </div>
 
