@@ -45,6 +45,9 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ path('admin_purchase_index') }}"><i class="fas fa-receipt me-1"></i> Expenses</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ path('admin_user_index') }}"><i class="fas fa-users-cog me-1"></i> Staff</a>
+                                </li>
                             {% endif %}
                             
                             {% if is_granted('ROLE_WORKER') or is_granted('ROLE_ADMIN') %}

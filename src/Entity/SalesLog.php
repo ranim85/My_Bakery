@@ -29,6 +29,9 @@ class SalesLog
     #[ORM\Column(type: 'date')]
     private ?\DateTimeInterface $date = null;
 
+    #[ORM\Column(length: 20, nullable: true)]
+    private ?string $shift = null;
+
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $worker = null;
@@ -52,4 +55,7 @@ class SalesLog
 
     public function getWorker(): ?User { return $this->worker; }
     public function setWorker(?User $worker): static { $this->worker = $worker; return $this; }
+
+    public function getShift(): ?string { return $this->shift; }
+    public function setShift(?string $shift): static { $this->shift = $shift; return $this; }
 }

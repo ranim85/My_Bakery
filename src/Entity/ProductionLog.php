@@ -23,6 +23,9 @@ class ProductionLog
     #[ORM\Column(type: 'date')]
     private ?\DateTimeInterface $date = null;
 
+    #[ORM\Column(length: 20, nullable: true)]
+    private ?string $shift = null;
+
     public function getId(): ?int { return $this->id; }
 
     public function getProduct(): ?Product { return $this->product; }
@@ -33,4 +36,7 @@ class ProductionLog
 
     public function getDate(): ?\DateTimeInterface { return $this->date; }
     public function setDate(\DateTimeInterface $date): static { $this->date = $date; return $this; }
+
+    public function getShift(): ?string { return $this->shift; }
+    public function setShift(?string $shift): static { $this->shift = $shift; return $this; }
 }

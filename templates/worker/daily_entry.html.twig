@@ -33,8 +33,17 @@
         <div class="col-lg-5 mb-4">
             <div class="card shadow border-0 rounded-4 mb-4">
                 <div class="card-header bg-white border-bottom-0 pt-4 pb-0 px-4">
-                    <h2 class="title-brown h4 fw-bold">Étape 1 : Saisir un produit</h2>
-                    <p class="text-muted small">Sélectionnez le produit dans la liste et validez ses statistiques réelles.</p>
+                    <h2 class="title-brown h4 fw-bold mb-3">Étape 1 : Saisir un produit</h2>
+                    
+                    <form method="post" class="bg-light px-3 py-2 rounded-3 border d-inline-block mb-3">
+                        <span class="text-secondary fw-bold small me-2"><i class="fas fa-clock text-primary"></i> Quel est votre service ?</span>
+                        <div class="btn-group shadow-sm" role="group">
+                            <button type="submit" name="worker_shift_toggle" value="Matin" class="btn btn-sm {% if currentShift == 'Matin' %}btn-primary{% else %}btn-outline-primary bg-white text-dark border-secondary{% endif %} fw-bold px-3">Matin</button>
+                            <button type="submit" name="worker_shift_toggle" value="Soir" class="btn btn-sm {% if currentShift == 'Soir' %}btn-dark{% else %}btn-outline-dark bg-white text-dark border-secondary{% endif %} fw-bold px-3">Soir</button>
+                        </div>
+                    </form>
+                    
+                    <p class="text-muted small">Sélectionnez le produit dans la liste et validez ses statistiques réelles pour le service {{ currentShift }}.</p>
                 </div>
                 <div class="card-body p-4">
                     {% if products|length > 0 %}
@@ -117,8 +126,8 @@
         <div class="col-lg-7">
             <div class="card shadow-sm border-0 rounded-4 bg-white h-100">
                 <div class="card-header bg-transparent border-bottom-0 pt-4 pb-2 px-4 d-flex justify-content-between align-items-center">
-                    <h2 class="title-brown h5 fw-bold mb-0">Historique des déclarations (Aujourd'hui)</h2>
-                    <span class="badge bg-secondary rounded-pill">{{ todayLogs|length }} Produits</span>
+                    <h2 class="title-brown h5 fw-bold mb-0">Historique (Aujourd'hui - {{ currentShift }})</h2>
+                    <span class="badge {% if currentShift == 'Matin' %}bg-primary{% else %}bg-dark{% endif %} rounded-pill shadow-sm px-3 py-2 border">{{ todayLogs|length }} Produits</span>
                 </div>
                 <div class="card-body px-4 pb-4">
                     {% if todayLogs|length > 0 %}

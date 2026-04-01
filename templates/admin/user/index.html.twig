@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion du Personnel - My Bakery{% endblock %}
+
+{% block body %}
+<div class="container mt-4 mb-5 pb-5">
+    
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success shadow-sm rounded-3"><i class="fas fa-check-circle me-2"></i> {{ message }}</div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger shadow-sm rounded-3"><i class="fas fa-exclamation-triangle me-2"></i> {{ message }}</div>
+    {% endfor %}
+
+    <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+        <h1 class="title-brown d-flex align-items-center mb-0">
+            <i class="fas fa-users-cog me-2 text-warning"></i> Gestion des Employés
+        </h1>
+        <a href="{{ path('admin_user_new') }}" class="btn btn-primary btn-bakery fw-bold shadow-sm">
+            <i class="fas fa-user-plus me-1"></i> Nouvel Employé
+        </a>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light text-secondary small">
+                        <tr>
+                            <th class="ps-4">Email / Identifiant</th>
+                            <th>Rôle</th>
+                            <th>Sécurité</th>
+                            <th class="text-end pe-4">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for u in users %}
+                        <tr>
+                            <td class="ps-4 fw-bold">
+                                <i class="fas fa-user-circle text-primary me-2"></i> {{ u.username }}
+                                {% if app.user.id == u.id %}<span class="badge bg-success ms-2">Vous-même</span>{% endif %}
+                            </td>
+                            <td>
+                                {% if 'ROLE_ADMIN' in u.roles %}
+                                    <span class="badge bg-danger rounded-pill px-3 pt-2 pb-1"><i class="fas fa-crown me-1 text-warning"></i> Manager</span>
+                                {% else %}
+                                    <span class="badge bg-info rounded-pill px-3 pt-2 pb-1 text-white"><i class="fas fa-cash-register me-1"></i> Vendeur (Worker)</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <form action="{{ path('admin_user_reset_password', {'id': u.id}) }}" method="post" class="d-flex align-items-center" onsubmit="return confirm('Forcer un nouveau mot de passe ?');">
+                                    <input type="password" name="new_password" class="form-control form-control-sm me-2" style="width: 150px;" placeholder="Nouveau mot de passe" required>
+                                    <button class="btn btn-sm btn-outline-secondary" type="submit" title="Réinitialiser MDP"><i class="fas fa-key"></i></button>
+                                </form>
+                            </td>
+                            <td class="text-end pe-4">
+                                <form method="post" action="{{ path('admin_user_delete', {'id': u.id}) }}" class="d-inline-block" onsubmit="return confirm('Confirmer la suppression / licenciement de cet employé ? Tout accès lui sera refusé.');">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ u.id) }}">
+                                    <button class="btn btn-sm btn-outline-danger btn-circle" {% if app.user.id == u.id %}disabled{% endif %} title="Supprimer">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr><td colspan="4" class="text-center text-muted py-4">Aucun personnel enregistré.</td></tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
